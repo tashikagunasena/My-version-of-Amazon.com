@@ -1,1 +1,1 @@
-# My-version-of-Amazon.com
+This website is my version of Amazon.com. Its very simple but coding it wasnt simple lol. I had alot of help from SuperSimpleDev from youtube who guided me to create this website but don't worry the fine tunnig I did and adding my own personal style was done by me and me only.
