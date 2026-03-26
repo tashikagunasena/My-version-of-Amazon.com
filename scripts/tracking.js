@@ -93,5 +93,29 @@ function renderTracking() {
   document.querySelector(".js-order-tracking").innerHTML = trackingHtml;
 }
 
+// --- Search functionality ---
+function setupSearch() {
+  const searchInput = document.querySelector(".search-bar");
+  const searchButton = document.querySelector(".search-button");
+
+  if (!searchInput || !searchButton) return;
+
+  const executeSearch = () => {
+    const query = searchInput.value.trim();
+    if (query) {
+      window.location.href = `index.html?search=${encodeURIComponent(query)}`;
+    } else {
+      window.location.href = "index.html";
+    }
+  };
+
+  searchButton.addEventListener("click", executeSearch);
+  searchInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") executeSearch();
+  });
+}
+
+// --- Initialization ---
 renderTracking();
 updateCartQuantity();
+setupSearch();
