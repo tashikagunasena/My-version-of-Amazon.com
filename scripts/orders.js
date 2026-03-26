@@ -11,6 +11,128 @@ function updateCartQuantity() {
   document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
 }
 
+// ---------- Modal for cancellation ----------
+function createCancelModal(orderId, productId, productName) {
+  // Remove any existing modal
+  const existingModal = document.querySelector(".cancel-modal-overlay");
+  if (existingModal) existingModal.remove();
+
+  const overlay = document.createElement("div");
+  overlay.className = "cancel-modal-overlay";
+
+  const modal = document.createElement("div");
+  modal.className = "cancel-modal";
+
+  modal.innerHTML = `
+    <div class="cancel-modal-header">
+      <h3>Cancel Package</h3>
+      <button class="cancel-modal-close">&times;</button>
+    </div>
+    <div class="cancel-modal-body">
+      <p>Why do you want to cancel <strong>${productName}</strong>?</p>
+      <div class="cancel-reasons">
+        <label><input type="checkbox" value="Item arrived damaged"> Item arrived damaged</label>
+        <label><input type="checkbox" value="Wrong item received"> Wrong item received</label>
+        <label><input type="checkbox" value="Changed my mind"> Changed my mind</label>
+        <div class="other-container">
+          <label><input type="checkbox" value="Other" class="cancel-other-checkbox"> Other</label>
+          <div class="cancel-other-input" style="display: none;">
+            <input type="text" placeholder="Please specify..." class="cancel-other-text">
+          </div>
+        </div>
+      </div>
+      <div class="cancel-error" style="color: #d32f2f; font-size: 0.85rem; margin-top: 10px; display: none;">
+        Please select a reason or specify in "Other".
+      </div>
+    </div>
+    <div class="cancel-modal-footer">
+      <button class="cancel-submit-btn button-primary">Submit Cancellation</button>
+      <button class="cancel-close-btn button-secondary">Close</button>
+    </div>
+  `;
+
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+
+  // Close functions
+  const closeModal = () => overlay.remove();
+  modal
+    .querySelector(".cancel-modal-close")
+    .addEventListener("click", closeModal);
+  modal
+    .querySelector(".cancel-close-btn")
+    .addEventListener("click", closeModal);
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) closeModal();
+  });
+
+  // Show/hide other input
+  const otherCheckbox = modal.querySelector(".cancel-other-checkbox");
+  const otherInputDiv = modal.querySelector(".cancel-other-input");
+  const otherText = modal.querySelector(".cancel-other-text");
+
+  otherCheckbox.addEventListener("change", () => {
+    otherInputDiv.style.display = otherCheckbox.checked ? "block" : "none";
+    // Clear any existing error when user interacts
+    const errorDiv = modal.querySelector(".cancel-error");
+    if (errorDiv) errorDiv.style.display = "none";
+  });
+
+  // Submit cancellation with validation
+  const submitBtn = modal.querySelector(".cancel-submit-btn");
+  submitBtn.addEventListener("click", () => {
+    const errorDiv = modal.querySelector(".cancel-error");
+    errorDiv.style.display = "none";
+
+    // Collect selected reasons
+    const selectedReasons = Array.from(
+      modal.querySelectorAll(".cancel-reasons input[type='checkbox']:checked"),
+    ).map((cb) => cb.value);
+
+    // If "Other" is checked and text is provided, add it
+    let otherProvided = false;
+    if (otherCheckbox.checked) {
+      const otherValue = otherText.value.trim();
+      if (otherValue) {
+        selectedReasons.push(`Other: ${otherValue}`);
+        otherProvided = true;
+      }
+    }
+
+    // Validation: at least one reason OR (Other checked with text)
+    const hasValidReason = selectedReasons.length > 0;
+
+    if (!hasValidReason) {
+      errorDiv.style.display = "block";
+      return;
+    }
+
+    console.log("Cancellation reasons:", selectedReasons);
+
+    // Remove the item from orders
+    let orders = JSON.parse(localStorage.getItem("orders")) || [];
+    const orderIndex = orders.findIndex((o) => o.id === orderId);
+    if (orderIndex !== -1) {
+      const order = orders[orderIndex];
+      const itemIndex = order.items.findIndex((i) => i.productId === productId);
+      if (itemIndex !== -1) {
+        order.items.splice(itemIndex, 1);
+        if (order.items.length === 0) {
+          orders.splice(orderIndex, 1);
+        }
+        localStorage.setItem("orders", JSON.stringify(orders));
+        closeModal();
+        renderOrders(); // re-render orders grid
+      } else {
+        alert("Item not found in order.");
+      }
+    } else {
+      alert("Order not found.");
+    }
+  });
+}
+
+// ---------- Render orders ----------
 function renderOrders() {
   const orders = JSON.parse(localStorage.getItem("orders")) || [];
   const ordersGrid = document.querySelector(".js-orders-grid");
@@ -48,6 +170,9 @@ function renderOrders() {
               <a href="tracking.html?orderId=${order.id}&productId=${item.productId}">
                 <button class="track-package-button button-secondary">Track package</button>
               </a>
+              <button class="cancel-package-button button-secondary" data-order-id="${order.id}" data-product-id="${item.productId}" data-product-name="${item.productName}">
+                Cancel package
+              </button>
             </div>
           `;
         })
@@ -89,9 +214,19 @@ function renderOrders() {
       alert(`${quantity} item(s) added to cart.`);
     });
   });
+
+  // Attach cancel package listeners
+  document.querySelectorAll(".cancel-package-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const orderId = button.dataset.orderId;
+      const productId = button.dataset.productId;
+      const productName = button.dataset.productName;
+      createCancelModal(orderId, productId, productName);
+    });
+  });
 }
 
-// --- Search functionality ---
+// ---------- Search functionality ----------
 function setupSearch() {
   const searchInput = document.querySelector(".search-bar");
   const searchButton = document.querySelector(".search-button");
@@ -113,7 +248,7 @@ function setupSearch() {
   });
 }
 
-// --- Initialization ---
+// ---------- Initialization ----------
 renderOrders();
 updateCartQuantity();
 setupSearch();
