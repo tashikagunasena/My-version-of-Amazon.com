@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains the source code for a functional clone of the Amazon.com e-commerce platform. This project demonstrates proficiency in front-end web development by replicating the core user interface, layout, and interactive elements of one of the world's largest online retail platforms .
+This repository contains the source code for a functional clone of the Amazon.com e-commerce platform. This project demonstrates proficiency in front-end web development by replicating the core user interface, layout, and interactive elements of one of the world's largest online retail platforms.
 
 **Live Site:** [https://tashikagunasena.github.io/My-version-of-Amazon.com/](https://tashikagunasena.github.io/My-version-of-Amazon.com/)
 
@@ -10,7 +10,9 @@ This repository contains the source code for a functional clone of the Amazon.co
 
 ## Project Description
 
-This Amazon clone project recreates the visual design and layout of Amazon's website to practice real-world UI development . The implementation focuses on delivering a responsive, user-friendly shopping experience with product cards, interactive design elements, and a shopping-style layout .
+This Amazon clone project recreates the visual design and layout of Amazon's website to practice real-world UI development. The implementation focuses on delivering a responsive, user-friendly shopping experience with product cards, interactive design elements, and a shopping-style layout.
+
+**Note:** This project was developed following a guided tutorial by **SuperSimpleDev** on YouTube. While the foundational structure was inspired by the tutorial, all **CSS styling, visual fine-tuning, and customization were completed independently**. The JavaScript implementation was partially guided, with additional modifications and debugging done autonomously.
 
 ---
 
@@ -43,15 +45,17 @@ This Amazon clone project recreates the visual design and layout of Amazon's web
 My-version-of-Amazon.com/
 ├── index.html          # Main HTML file
 ├── css/                # Stylesheets
-│   ├── style.css       # Main styles
-│   └── responsive.css  # Mobile responsiveness
+│   ├── style.css       # Main styles (Custom)
+│   └── responsive.css  # Mobile responsiveness (Custom)
 ├── js/                 # JavaScript files
-│   └── script.js       # Interactive functionality
+│   └── script.js       # Interactive functionality (Partially guided)
 ├── assets/             # Images and media files
 │   ├── images/         # Product and UI images
 │   └── icons/          # Navigation and feature icons
 └── README.md           # Project documentation
 ```
+
+---
 
 ## Usage
 
@@ -90,7 +94,19 @@ This project demonstrates competency in:
 - ✅ DOM manipulation with JavaScript
 - ✅ CSS layout techniques (Flexbox, Grid)
 - ✅ Version control with Git/GitHub
-- ✅ UI/UX design replication 
+- ✅ UI/UX design replication
+- ✅ Independent problem-solving and customization
+
+---
+
+## Development Notes
+
+| Component | Contribution |
+|-----------|--------------|
+| **HTML Structure** | Guided by SuperSimpleDev tutorial |
+| **CSS Styling** | **100% Independent** – All styling, colors, spacing, and responsive design |
+| **JavaScript** | Partially guided – Core logic from tutorial, debugging and enhancements independent |
+| **Fine-Tuning** | **100% Independent** – All visual adjustments and polish |
 
 ---
 
@@ -122,6 +138,7 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## Acknowledgments
 
-- Amazon.com for the design inspiration
-- GitHub Pages for hosting services
-- Open-source community for resources and support
+- **SuperSimpleDev** – For the YouTube tutorial and JavaScript guidance
+- **Amazon.com** – For the design inspiration
+- **GitHub Pages** – For hosting services
+- **Open-source Community** – For resources and support
