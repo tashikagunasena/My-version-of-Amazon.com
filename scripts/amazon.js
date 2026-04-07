@@ -1,13 +1,11 @@
 import { cart, addToCart } from "../data/cart.js";
 import { products } from "../data/products.js";
 
-// Helper: get URL search parameter
 function getSearchQuery() {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get("search") || "";
 }
 
-// Filter products based on search term (name or keywords)
 function filterProducts(products, searchTerm) {
   if (!searchTerm.trim()) return products;
   const term = searchTerm.toLowerCase().trim();
@@ -20,7 +18,6 @@ function filterProducts(products, searchTerm) {
   });
 }
 
-// Render product grid
 function renderProducts(productsToRender) {
   let productsHTML = "";
   productsToRender.forEach((product) => {
@@ -82,7 +79,6 @@ function renderProducts(productsToRender) {
 
   document.querySelector(".js-products-grid").innerHTML = productsHTML;
 
-  // Attach add-to-cart events
   document.querySelectorAll(".js-add-to-cart").forEach((button) => {
     button.addEventListener("click", () => {
       const productId = button.dataset.productId;
@@ -114,7 +110,6 @@ function updateCart() {
   document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
 }
 
-// --- Search functionality ---
 function setupSearch() {
   const searchInput = document.querySelector(".search-bar");
   const searchButton = document.querySelector(".search-button");
@@ -136,13 +131,12 @@ function setupSearch() {
   });
 }
 
-// --- Main ---
+
 const searchQuery = getSearchQuery();
 const filteredProducts = filterProducts(products, searchQuery);
 renderProducts(filteredProducts);
 updateCart();
 
-// If we are on index.html and have a search query, set the input value
 if (searchQuery) {
   const searchInput = document.querySelector(".search-bar");
   if (searchInput) searchInput.value = searchQuery;
